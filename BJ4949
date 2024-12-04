@@ -1,0 +1,54 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
+
+public class BJ4949 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        while (true){
+            String str = br.readLine();
+            if(str.equals(".")){
+                break;
+            }
+            Stack<Character> small = new Stack<>();
+
+            for(int i = 0; i < str.length(); i++){
+                if(str.charAt(i) == '('){
+                    small.push(str.charAt(i));
+                }
+                else if(str.charAt(i) == '['){
+                    small.push(str.charAt(i));
+                }
+                else if(str.charAt(i) == ')'){
+                    if(small.isEmpty()){
+                        System.out.println("no");
+                        break;
+                    }
+                    if(!small.pop().equals('(')){
+                        System.out.println("no");
+                        break;
+                    }
+                }
+                else if(str.charAt(i) == ']'){
+                    if(small.isEmpty()){
+                        System.out.println("no");
+                        break;
+                    }
+                    if(!small.pop().equals('[')){
+                        System.out.println("no");
+                        break;
+                    }
+                }
+                if(small.isEmpty()&&i==str.length()-1){
+                    System.out.println("yes");
+                }
+                if(i==str.length()-1&&!small.isEmpty()){
+                    System.out.println("no");
+                }
+            }
+        }
+    }
+}
