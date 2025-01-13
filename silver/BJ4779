@@ -1,0 +1,46 @@
+package org.example.silver;
+
+import java.util.Scanner;
+
+public class BJ4779 {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        while (in.hasNextInt()) {
+            int n = in.nextInt(); // 단계 입력
+            int size = (int) Math.pow(3, n); // 칸토어 집합의 길이
+            char[] arr = new char[size]; // 칸토어 집합 배열 생성
+
+            // 배열을 '-'로 초기화
+            for (int i = 0; i < size; i++) {
+                arr[i] = '-';
+            }
+
+            // 칸토어 집합 생성
+            cantor(arr, 0, size);
+
+            // 결과 출력
+            System.out.println(new String(arr));
+        }
+    }
+
+    // 칸토어 집합 생성 함수
+    static void cantor(char[] arr, int start, int end) {
+        int length = end - start;
+
+        // 종료 조건: 길이가 1 이하인 경우 더 이상 분할하지 않음
+        if (length <= 1) {
+            return;
+        }
+
+        // 중간 부분을 공백(' ')으로 설정
+        int third = length / 3;
+        for (int i = start + third; i < start + 2 * third; i++) {
+            arr[i] = ' ';
+        }
+
+        // 왼쪽과 오른쪽 부분에 대해 재귀 호출
+        cantor(arr, start, start + third); // 왼쪽 부분
+        cantor(arr, start + 2 * third, end); // 오른쪽 부분
+    }
+}
