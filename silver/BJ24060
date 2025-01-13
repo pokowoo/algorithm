@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+public class BJ24060 {
+    static int count = 0;
+    static int isCount = -1;
+    static void merge_sort(int[] A, int start, int end) {
+        if(start<end){
+            int mid = (start+end)/2;
+            merge_sort(A,start,mid);
+            merge_sort(A,mid+1,end);
+            merge(A,start,mid,end);
+        }
+
+    }
+    static void merge(int[] A, int start, int mid, int end) {
+
+        int[] temp = new int[end-start+1];
+        int i = start;
+        int j = mid+1;
+        int k = 0;
+        while(i<=mid && j<=end){
+            if(A[i]<A[j]){
+                temp[k++] = A[i++];
+                count++;
+                if(count==isCount){
+                    System.out.println(A[i-1]);
+                }
+            }
+            else{
+                temp[k++] = A[j++];
+
+                count++;
+                if(count==isCount){
+                    System.out.println(A[i-1]);
+                }
+            }
+        }
+        while(i<=mid){
+            temp[k++] = A[i++];
+
+            count++;
+            if(count==isCount){
+                System.out.println(A[i-1]);
+            }
+        }
+        while(j<=end){
+            temp[k++] = A[j++];
+
+            count++;
+            if(count==isCount){
+                System.out.println(A[i-1]);
+            }
+        }
+        i=start;
+        k=0;
+        while(i<=end){
+            A[i++] = temp[k++];
+
+        }
+
+
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int size = sc.nextInt();
+        isCount = sc.nextInt();
+        int[] A = new int[size];
+        for(int i=0; i<size; i++){
+            A[i] = sc.nextInt();
+        }
+        merge_sort(A,0,size-1);
+        if(isCount>count){
+            System.out.println(-1);
+        }
+
+    }
+}
