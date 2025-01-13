@@ -1,0 +1,55 @@
+import java.util.Scanner;
+
+public class BJ2447 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // 입력 크기 (n은 항상 3^k 형태)
+        char[][] arr = new char[n][n]; // 출력 배열
+
+        // 배열을 별(*)로 초기화
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = '*';
+            }
+        }
+
+        // 재귀적으로 빈 공간 처리
+        draw(arr, 0, 0, n);
+
+        // 배열 출력
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                sb.append(arr[i][j]);
+            }
+            sb.append("\n");
+        }
+        System.out.print(sb.toString());
+    }
+
+    // 별을 비우는 함수
+    static void draw(char[][] arr, int x, int y, int size) {
+        if (size == 1) {
+            return; // 더 이상 분할할 수 없으면 종료
+        }
+
+        int subSize = size / 3; // 현재 크기를 3으로 나눔
+
+        // 가운데 부분을 공백으로 설정
+        for (int i = x + subSize; i < x + 2 * subSize; i++) {
+            for (int j = y + subSize; j < y + 2 * subSize; j++) {
+                arr[i][j] = ' ';
+            }
+        }
+
+        // 나머지 8개의 영역에 대해 재귀 호출
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (i == 1 && j == 1) {
+                    continue; // 중앙 부분은 이미 처리했으므로 생략
+                }
+                draw(arr, x + i * subSize, y + j * subSize, subSize);
+            }
+        }
+    }
+}
