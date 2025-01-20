@@ -1,0 +1,43 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BJ9663 {
+    static int N;
+    static int Count = 0;
+    static boolean[] col;          // 열 추적
+    static boolean[] diag1;        // 좌하향 대각선 (\)
+    static boolean[] diag2;        // 우하향 대각선 (/)
+
+    static void getNQueens(int y) {
+        if (y == N) {              // 모든 행에 퀸을 배치한 경우
+            Count++;
+            return;
+        }
+        for (int x = 0; x < N; x++) {
+            if (!col[x] && !diag1[y - x + N - 1] && !diag2[y + x]) {
+                col[x] = true;
+                diag1[y - x + N - 1] = true;
+                diag2[y + x] = true;
+
+                getNQueens(y + 1); // 다음 행으로 이동
+
+                col[x] = false;    // 백트래킹 (원상 복구)
+                diag1[y - x + N - 1] = false;
+                diag2[y + x] = false;
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        col = new boolean[N];
+        diag1 = new boolean[2 * N - 1];
+        diag2 = new boolean[2 * N - 1];
+
+        getNQueens(0);
+        System.out.println(Count);
+    }
+}
