@@ -1,0 +1,73 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ2580 {
+    static int[][] sudoku = new int[9][9];
+
+    // 특정 셀에서 가능한 후보 값 리스트를 확인
+    static boolean isValid(int row, int col, int num) {
+        // 행과 열 확인
+        for (int i = 0; i < 9; i++) {
+            if (sudoku[row][i] == num || sudoku[i][col] == num) {
+                return false;
+            }
+        }
+        // 3×3 서브그리드 확인
+        int rowStart = (row / 3) * 3;
+        int colStart = (col / 3) * 3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (sudoku[rowStart + i][colStart + j] == num) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // 백트래킹으로 스도쿠 해결
+    static boolean solveSudoku() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (sudoku[row][col] == 0) { // 빈 칸을 찾음
+                    for (int num = 1; num <= 9; num++) { // 1부터 9까지 시도
+                        if (isValid(row, col, num)) { // 유효성 검사
+                            sudoku[row][col] = num;
+                            if (solveSudoku()) { // 다음 단계로 진행
+                                return true;
+                            }
+                            sudoku[row][col] = 0; // 백트래킹
+                        }
+                    }
+                    return false; // 해결 불가
+                }
+            }
+        }
+        return true; // 모든 칸이 채워짐
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        for (int i = 0; i < 9; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 9; j++) {
+                sudoku[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        if (solveSudoku()) {
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    System.out.print(sudoku[i][j] + " ");
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("스도쿠를 해결할 수 없습니다.");
+        }
+    }
+}
