@@ -1,0 +1,34 @@
+
+import java.util.Scanner;
+
+public class BJ24416 {
+    static int recursionCounter = 1;
+    static int dinamicCounter = 1;
+    static int recursionFibo(int n) {
+
+        if(n <=2){
+            return 1;
+        }
+        recursionCounter++;
+        return recursionFibo(n-1) + recursionFibo(n-2);
+    }
+    static int[] DP = new int[1001];
+    static int dinamicFibo(int n) {
+        for(int i=3; i<n; i++){
+            dinamicCounter++;
+            DP[i] = DP[i-1] + DP[i-2];
+        }
+        return DP[n];
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        DP[0]=1;
+        DP[1]=1;
+        recursionFibo(n);
+        dinamicFibo(n);
+        System.out.print(recursionCounter+" ");
+        System.out.println(dinamicCounter);
+    }
+
+}
