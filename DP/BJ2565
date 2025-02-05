@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+      
+        int N = scanner.nextInt();
+
+        int[][] pairs = new int[N][2]; // (x, y) 쌍을 저장할 배열
+
+        for (int i = 0; i < N; i++) {
+           
+            pairs[i][0] = scanner.nextInt(); // x 값
+            pairs[i][1] = scanner.nextInt(); // y 값
+        }
+
+        // x 기준으로 정렬
+        Arrays.sort(pairs, Comparator.comparingInt(a -> a[0]));
+
+        // y 값 배열 생성
+        int[] yValues = new int[N];
+        for (int i = 0; i < N; i++) {
+            yValues[i] = pairs[i][1];
+        }
+
+        // LIS (최장 증가 부분 수열) 길이 계산
+        int lisLength = lengthOfLIS(yValues);
+
+        // 최소 제거 횟수 = 전체 개수 - LIS 길이
+        int minRemovals = N - lisLength;
+
+        System.out.println(minRemovals);
+        scanner.close();
+    }
+
+    // 최장 증가 부분 수열(LIS) 길이 찾기 (이진 탐색을 이용한 O(N log N) 방식)
+    public static int lengthOfLIS(int[] nums) {
+        ArrayList<Integer> lis = new ArrayList<>();
+        for (int num : nums) {
+            int pos = Collections.binarySearch(lis, num);
+            if (pos < 0) pos = -(pos + 1); // 삽입할 위치 찾기
+            if (pos < lis.size()) {
+                lis.set(pos, num); // 기존 값을 대체하여 LIS 유지
+            } else {
+                lis.add(num); // 새로운 값 추가
+            }
+        }
+        return lis.size();
+    }
+}
